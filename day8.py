@@ -7,7 +7,7 @@ def check_visible(I,x,y):
     if x==0 or y==0 or x==len(I)-1 or y==len(I[0])-1:
         return 1
     else:
-        if max(a:=I[x][:y]) < I[x][y]:
+        if max(I[x][:y]) < I[x][y]:
             return 1
         if max(I[x][y+1:]) < I[x][y]:
             return 1
