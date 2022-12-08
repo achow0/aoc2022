@@ -40,11 +40,11 @@ def scenic_score(I,x,y):
         s *= i
         return s
 
-max_v = 0
+v = 0
 max_s = 0
 for a in range(len(I)):
     for b in range(len(I[0])):
         if check_visible(I,a,b):
-            max_v += 1
+            v += 1
             max_s = max(max_s,scenic_score(I,a,b))
-print(max_v,max_s)
+print(v,max_s)
