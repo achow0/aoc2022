@@ -50,5 +50,7 @@ for i in dirs.values():
 
 need_to_free = 30000000 - unused
 
-dir_sums = [x for x in dir_sums if x>need_to_free]
-print(min(dir_sums))
+part1 = [x for x in dir_sums if x<=100000]
+part2 = [x for x in dir_sums if x>need_to_free]
+print(sum(part1))
+print(min(part2))
