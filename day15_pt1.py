@@ -1,3 +1,4 @@
+# Part 1 for now because idk how to solve part 2 lmao
 import sys
 import re
 #import functools
