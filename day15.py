@@ -1,8 +1,7 @@
 import sys
 import re
 #import functools
-I1 = sys.stdin.read().splitlines()
-I2 = I1.copy()
+I = sys.stdin.read().splitlines()
 
 class Sensor:
     def __init__(self,x,y,b_x,b_y):
@@ -74,7 +73,7 @@ check_y = 2000000
 intervals = []
 b_check_y = set()
 sensors = []
-for i in I1:
+for i in I:
     x,y,b_x,b_y = map(int,re.findall(r"Sensor at x=([0-9\-]+), y=([0-9\-]+): closest beacon is at x=([0-9\-]+), y=([0-9\-]+)",i)[0])
     sensors += [Sensor(x,y,b_x,b_y)]
     if b_y == check_y:
