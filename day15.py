@@ -1,8 +1,16 @@
-# Part 1 for now because idk how to solve part 2 lmao
 import sys
 import re
 #import functools
-I = sys.stdin.read().splitlines()
+I1 = sys.stdin.read().splitlines()
+I2 = I1.copy()
+
+class Sensor:
+    def __init__(self,x,y,b_x,b_y):
+        self.x = x
+        self.y = y
+        self.b_x = b_x
+        self.b_y = b_y
+        self.d = abs(self.x-self.b_x) + abs(self.y-self.b_y)
 
 def combine(intervals):
     while True:
@@ -43,6 +51,20 @@ def combine(intervals):
                     break_flag = True
                     combined = True
                     break
+                elif all_se == [i_s,i_e,j_s,j_e] and i_e == j_s-1:
+                    intervals.remove([i_s,i_e])
+                    intervals.remove([j_s,j_e])
+                    intervals += [[i_s,j_e]]
+                    break_flag = True
+                    combined = True
+                    break
+                elif all_se == [j_s,j_e,i_s,i_e] and j_e == i_s-1:
+                    intervals.remove([i_s,i_e])
+                    intervals.remove([j_s,j_e])
+                    intervals += [[j_s,i_e]]
+                    break_flag = True
+                    combined = True
+                    break
             if break_flag:
                 break
         if not combined:
@@ -50,22 +72,30 @@ def combine(intervals):
 
 check_y = 2000000
 intervals = []
-beacons_x = set()
-for i in I:
+b_check_y = set()
+sensors = []
+for i in I1:
     x,y,b_x,b_y = map(int,re.findall(r"Sensor at x=([0-9\-]+), y=([0-9\-]+): closest beacon is at x=([0-9\-]+), y=([0-9\-]+)",i)[0])
-    d = abs(x-b_x) + abs(y-b_y)
-    y_d = abs(y-check_y)
+    sensors += [Sensor(x,y,b_x,b_y)]
     if b_y == check_y:
-        beacons_x |= {b_x}
-    if y_d <= d:
-        interval = [x-d+y_d,x+d-y_d]
-        intervals += [interval]
+        b_check_y |= {b_x}
+b_check_y = len(b_check_y)
 
-intervals = combine(intervals)
-ans = 0
-for s,e in intervals:
-    for x in beacons_x:
-        if s <= x <= e:
-            ans -= 1
-    ans += e-s+1
-print(ans)
+max_val = 4000000
+
+for Y in range(max_val+1):
+    intervals = []
+    for s in sensors:
+        y_d = abs(s.y-Y)
+        if y_d <= s.d:
+            intervals += [[s.x-s.d+y_d,s.x+s.d-y_d]]
+    intervals = [[s,e] for s,e in sorted(combine(intervals)) if s<=max_val]
+    if Y == check_y:
+        ans = 0
+        for s,e in intervals:
+            ans += e-s+1
+        print(ans-b_check_y)
+    if len(intervals) == 2:
+        X = intervals[0][1] + 1
+        print(Y + 4000000 * X)
+        break
