@@ -1,5 +1,5 @@
 import sys
-import re
+#import re
 import functools
 I = sys.stdin.read().strip().splitlines()
 open_faces = {}
